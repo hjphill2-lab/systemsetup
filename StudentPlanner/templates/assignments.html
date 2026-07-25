@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>My Assignments</title>
+</head>
+<body>
+    <h1>My Assignments</h1>
+    <a href="/assignments">View My Assignments</a>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Course</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Due Date</th>
+            <th>Completed</th>
+        </tr>
+        {% for assignment in assignments %}
+        <tr>
+            <td>{{ assignment[2] }}</td>
+            <td>{{ assignment[3] }}</td>
+            <td>{{ assignment[4] }}</td>
+            <td>{{ assignment[5] }}</td>
+            <td>{{ 'Yes' if assignment[6] else 'No' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/home">Back to Home</a>
+</body>
+</html>

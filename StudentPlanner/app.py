@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, session, redirect
 from database import get_connection
-
 app = Flask(__name__)
 app.secret_key = 'studentplanner-secret-key'
 
@@ -9,17 +8,14 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
-        # Check user credentials in the database
         db = get_connection()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM Users WHERE username = %s AND password = %s", (username, password))
         user = cursor.fetchone()
         cursor.close()
         db.close()
-
         if user:
-            session['UserID'] = user[0]  # Store UserID in session
+            session['UserID'] = user[0]
             return render_template("home.html")
         else:
             return "Invalid username or password."
@@ -31,15 +27,12 @@ def register():
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
-
-        # Insert user data into the database
         db = get_connection()
         cursor = db.cursor()
         cursor.execute("INSERT INTO Users (username, password, email) VALUES (%s, %s, %s)", (username, password, email))
         db.commit()
         cursor.close()
         db.close()
-
         return "Registration successful!"
     return render_template('register.html')
 
@@ -55,17 +48,24 @@ def add_assignment():
         description = request.form['Description']
         due_date = request.form['DueDate']
         completed = 'Completed' in request.form
-
-        # Insert assignment data into the database
         db = get_connection()
         cursor = db.cursor()
         cursor.execute("INSERT INTO Assignments (UserID, CourseName, Title, Description, DueDate, Completed) VALUES (%s, %s, %s, %s, %s, %s)", (session['UserID'], course_name, title, description, due_date, completed))
         db.commit()
         cursor.close()
         db.close()
-
-        return redirect('/home')  # Redirect to the home page after adding
+        return redirect('/home')
     return render_template('add_assignment.html')
+
+@app.route('/assignments')
+def view_assignments():
+    db = get_connection()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM Assignments WHERE UserID = %s", (session['UserID'],))
+    assignments = cursor.fetchall()
+    cursor.close()
+    db.close()
+    return render_template('assignments.html', assignments=assignments)
 
 if __name__ == '__main__':
     app.run(debug=True)
