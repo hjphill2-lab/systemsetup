@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Assignment</title>
+</head>
+<body>
+    <h1>Edit an Existing Assignment</h1>
+    <form  action="/edit_assignment" method="POST">
+        <label for="CourseName">Edit Course Name:</label>
+        <input type="text" id="CourseName" name="CourseName" required>
+        <br><br>
+        <label for="Title">Edit Assignment Name:</label>
+        <input type="text" id="Title" name="Title" required>
+        <br><br>
+        <label for="Description">Edit Description:</label>
+        <textarea id="Description" name="Description"></textarea>
+        <br><br>
+        <label for="DueDate">Edit Due Date:</label>
+        <input type="date" id="DueDate" name="DueDate" required>
+        <br><br>
+        <label for="Completed">Completed:</label>
+        <input type="checkbox" id="Completed" name="Completed">
+        <br><br>
+        <button type="submit">Edit Assignment</button>
+        <br><br>
+        <a href="/home">Cancel</a>
+    </form>
+</body>
+</html>

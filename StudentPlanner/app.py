@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, url_for
 from database import get_connection
 app = Flask(__name__)
 app.secret_key = 'studentplanner-secret-key'
@@ -66,6 +66,32 @@ def view_assignments():
     cursor.close()
     db.close()
     return render_template('assignments.html', assignments=assignments)
+
+@app.route("/edit_assigment/<int:assignment_id>", methods=["GET", "POST"])
+def edit_assigment(assignment_id):
+    db = get_connection()
+    cursor = db.cursor(dictionary=True)
+    if request.method == "POST":
+        course_name = request.form['CourseName']
+        title = request.form['Title']
+        description = request.form['Description']
+        due_date = request.form['DueDate']
+        completed = 1 if request.form.get("Completed") else 0
+        cursor.execute("""UPDATE Assignments SET CourseName = %s, Title = %s, Description = %s, DueDate = %s, Completed = %s 
+        WHERE AssignmentID = %s""", (course_name, title, description, due_date, completed, assignment_id))
+        db.commit()
+        cursor.close()
+        db.close()
+        return redirect(url_for("home"))
+
+    cursor.execute("""SELECT AssignmentID, CourseName, Title, Description, DueDate, Completed 
+    FROM Assignments WHERE AssignmentID = %s""", (assignment_id,))
+    assignment = cursor.fetchone()
+    cursor.close()
+    db.close()
+    if assignment is None:
+        return "Assignment not found.", 404
+    return render_template("edit_assignment.html", assignment=assignment)
 
 if __name__ == '__main__':
     app.run(debug=True)
