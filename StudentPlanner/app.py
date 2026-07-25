@@ -67,8 +67,8 @@ def add_assignment():
         return redirect('/home')  # Redirect to the home page after adding
     return render_template('add_assignment.html')
 
-@app.route("/edit_assigment/<int:assignment_id>",methods=["GET", "POST"])
-def edit_assigment(assignment_id):
+@app.route("/edit_assigment",methods=["GET", "POST"])
+def edit_assigment():
 db = get_connection()
 cursor = db.cursor(dictionary=True)
     if request.method == "POST":
