@@ -67,5 +67,42 @@ def add_assignment():
         return redirect('/home')  # Redirect to the home page after adding
     return render_template('add_assignment.html')
 
+@app.route("/edit_assigment/<int:assignment_id>",methods=["GET", "POST"])
+def edit_assigment(assignment_id):
+db = get_connection()
+cursor = db.cursor(dictionary=True)
+    if request.method == "POST":
+        course_name = request.form['CourseName']
+        title = request.form['Title']
+        description = request.form['Description']
+        due_date = request.form['DueDate']
+        completed = 1 if request.form.get("Completed") else 0
+
+        # Updates assignment data in the database
+        cursor.execute("""UPDATE Assignments SET CourseName = %s, Title = %s, Description = %s, DueDate = %s, Completed = %s 
+        WHERE AssignmentID = %s """, (course_name,title,description,due_date,completed,assignment_id))
+
+        db.commit()
+        cursor.close()
+        db.close()
+
+        return redirect (url_for("home"))
+    
+    # Retrives the current data from the database
+    cursor.execute("""SELECT AssignmentID, CourseName, Title, Description, DueDate, Completed 
+    FROM Assignments WHERE AssignmentID = %s""" (assignment_id, ))
+
+    assignment = cursor.fetchone()
+
+    cursor.close()
+    db.close()
+
+    if assignment is None:
+        return "Assignemnt not found.", 404
+
+    return render_template("edit_assignment.html", assignment=assignment)
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
