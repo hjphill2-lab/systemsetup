@@ -67,6 +67,17 @@ def view_assignments():
     db.close()
     return render_template('assignments.html', assignments=assignments)
 
+@app.route('/complete_assignment/<int:assignment_id>')
+def complete_assignment(assignment_id):
+    db = get_connection()
+    cursor = db.cursor()
+    cursor.execute("UPDATE Assignments SET Completed = 1 WHERE AssignmentID = %s AND UserID = %s", (assignment_id, session['UserID']))
+    db.commit()
+    cursor.close()
+    db.close()
+    return redirect('/assignments')
+
+
 @app.route("/edit_assigment/<int:assignment_id>", methods=["GET", "POST"])
 def edit_assigment(assignment_id):
     db = get_connection()

@@ -20,7 +20,13 @@
             <td>{{ assignment[3] }}</td>
             <td>{{ assignment[4] }}</td>
             <td>{{ assignment[5] }}</td>
-            <td>{{ 'Yes' if assignment[6] else 'No' }}</td>
+            <td>
+                {% if assignment[6] %}
+                Yes
+                {% else %}
+                <a href="/complete_assignment/{{ assignment[0] }}">Mark Complete</a>
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </table>
