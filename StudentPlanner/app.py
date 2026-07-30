@@ -34,11 +34,27 @@ def register():
         cursor.close()
         db.close()
         return "Registration successful!"
-    return render_template('register.html')
+    return render_template('login.html')
 
 @app.route('/home')
 def home():
-    return render_template("home.html")
+    db = get_connection()
+    cursor = db.cursor()
+    cursor.execute(
+        """
+        SELECT CourseName, Title, DueDate
+        FROM Assignments
+        WHERE UserID = %s AND Completed = 0
+        AND DueDate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+        ORDER BY DueDate
+        """,
+        (session['UserID'],)
+    )
+    reminders = cursor.fetchall()
+    cursor.close()
+    db.close()
+    return render_template("home.html", reminders=reminders)
+
 
 @app.route('/add_assignment', methods=['GET', 'POST'])
 def add_assignment():
@@ -103,6 +119,11 @@ def edit_assigment(assignment_id):
     if assignment is None:
         return "Assignment not found.", 404
     return render_template("edit_assignment.html", assignment=assignment)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)

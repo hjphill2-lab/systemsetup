@@ -4,26 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Assignment</title>
+    <link rel="stylesheet" href ="/static/style.css">
 </head>
 <body>
     <h1>Add New Assignment</h1>
     <form action="/add_assignment" method="post">
-        <label for="CourseName">Course Name:</label>
-        <input type="text" id="CourseName" name="CourseName" required>
-        <br><br>
-        <label for="Title">Assignment Name:</label>
-        <input type="text" id="Title" name="Title" required>
-        <br><br>
-        <label for="Description">Description:</label>
-        <textarea id="Description" name="Description"></textarea>
-        <br><br>
-        <label for="DueDate">Due Date:</label>
-        <input type="date" id="DueDate" name="DueDate" required>
-        <br><br>
-        <label for="Completed">Completed:</label>
-        <input type="checkbox" id="Completed" name="Completed">
-        <br><br>
-        <button type="submit">Add Assignment</button>
+        <div class="form-group">
+            <label for="CourseName">Course Name:</label>
+            <input type="text" id="CourseName" name="CourseName" required>
+        </div>
+        <div class="form-group">
+            <label for="Title">Assignment Name:</label>
+            <input type="text" id="Title" name="Title" required>
+        </div>
+        <div class="form-group">
+            <label for="Description">Description:</label>
+            <textarea id="Description" name="Description" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="DueDate">Due Date:</label>
+            <input type="date" id="DueDate" name="DueDate" required>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="button">Add Assignment</button>
+        </div>
     </form>
 </body>
 </html>

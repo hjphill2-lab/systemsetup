@@ -4,12 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Planner</title>
+    <link rel="stylesheet" href ="/static/style.css">
 </head>
 <body>
     <h1>Student Planner</h1>
     <p>Welcome to the Student Planner!</p>
-    <a href="/add_assignment">Add Assignment</a>
-    <a href="/edit_assignment">Edit Assignment</a>
-    <a href="/assignments">View My Assignments</a>
+    <h2>Reminders</h2>
+    {% if reminders %}
+        <ul>
+            {% for reminder in reminders %}
+            <li>{{ reminder[0] }} - {{ reminder[1] }} (Due: {{ reminder[2] }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You're all caught up!</p>
+    {% endif %}
+    <div class="button-container">
+        <a class="button" href="/add_assignment">Add Assignment</a>
+        <a class="button" href="/edit_assignment">Edit Assignment</a>
+        <a class="button" href="/assignments">View My Assignments</a>
+        <a class="button" href="/logout">Logout</a>
+    </div>
+
 </body>
 </html>
