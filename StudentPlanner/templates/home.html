@@ -23,6 +23,11 @@
         <a class="button" href="/add_assignment">Add Assignment</a>
         <a class="button" href="/edit_assignment">Edit Assignment</a>
         <a class="button" href="/assignments">View My Assignments</a>
+
+        {% if session["role"] == "admin" %}
+            <a class="button" href="/manage_users">Manage Users</a>
+        {% endif %}
+
         <a class="button" href="/logout">Logout</a>
     </div>
 

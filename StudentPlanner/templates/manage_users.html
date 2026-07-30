@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Manage User Accounts</h1>
+
+    {% if users %}
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Account Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+
+    {% for user in users %}
+    <tr>
+        <td>{{ user[1] }}</td>
+        <td>{{ user[2] }}</td>
+        <td>{{ user[3] }}</td>
+
+        <td>
+            {% if user[4] %}
+                Active
+            {% else %}
+                Inactive
+            {% endif %}
+        </td>
+
+        <td>
+            {% if user[4] %}
+                <a href="/deactivate_user/{{ user[0] }}">Deactivate</a>
+            {% else %}
+                <a href="/activate_user/{{ user[0] }}">Activate</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+
+    {% else %}
+        <p>No user accounts were found.</p>
+    {% endif %}
+
+    <br>
+    <a class="button" href="/home">Back to Home</a>
+</body>
+</html>
