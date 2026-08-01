@@ -211,6 +211,23 @@ def edit_assignment(assignment_id):
         assignment=assignment
     )
 
+@app.route("/delete_assignment/<int:assignment_id>", methods=['POST'])
+def delete_assignment(assignment_id):
+    if 'UserID' not in session:
+        return redirect('/')
+    
+    db = get_connection()
+    cursor = db.cursor()
+
+    cursor.execute("""DELETE FROM Assignments WHERE AssignmentID = %s AND UserID = %s""", 
+                   (assignment_id,session['UserID']))
+    
+    db.commit()
+    cursor.close()
+    db.close()
+    
+    return redirect(url_for('view_assignments'))
+
 @app.route('/manage_users')
 def manage_users():
     if 'UserID' not in session:
