@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Planner</title>
-    <link rel="stylesheet" href ="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <h1>Student Planner</h1>
@@ -19,16 +19,17 @@
     {% else %}
         <p>You're all caught up!</p>
     {% endif %}
-    <div class="button-container">
-        <a class="button" href="/add_assignment">Add Assignment</a>
-        <a class="button" href="/assignments">View My Assignments</a>
+        <div class="button-container">
+            <a class="button" href="/add_assignment">Add Assignment</a>
+            <a class="button" href="/assignments">View My Assignments</a>
+            <a class="button" href="/progress">View My Progress</a>
 
-        {% if session["role"] == "admin" %}
+            {% if session["role"] == "admin" %}
             <a class="button" href="/manage_users">Manage Users</a>
-        {% endif %}
+            {% endif %}
 
-        <a class="button" href="/logout">Logout</a>
-    </div>
+            <a class="button" href="/logout">Logout</a>
+        </div>
 
 </body>
 </html>

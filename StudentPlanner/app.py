@@ -309,11 +309,54 @@ def activate_user(user_id):
 
     return redirect('/manage_users')
 
-
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect('/')
+
+@app.route('/progress')
+def progress():
+    if 'UserID' not in session:
+        return redirect('/')
+
+    db = get_connection()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "SELECT COUNT(*) FROM Assignments WHERE UserID = %s",
+        (session['UserID'],)
+    )
+    total = cursor.fetchone()[0]
+
+    cursor.execute(
+        "SELECT COUNT(*) FROM Assignments WHERE UserID = %s AND Completed = 1",
+        (session['UserID'],)
+    )
+    completed = cursor.fetchone()[0]
+
+    cursor.execute(
+        """
+        SELECT CourseName, COUNT(*) AS total, SUM(Completed) AS done
+        FROM Assignments
+        WHERE UserID = %s
+        GROUP BY CourseName
+        """,
+        (session['UserID'],)
+    )
+    by_course = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    percent = round((completed / total) * 100) if total > 0 else 0
+
+    return render_template(
+        'progress.html',
+        total=total,
+        completed=completed,
+        percent=percent,
+        by_course=by_course
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)
